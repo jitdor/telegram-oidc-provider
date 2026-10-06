@@ -1,4 +1,4 @@
-# Telegram Identity Provider (IdP)
+# Telegram OIDC Provider
 
 A self-hosted **OAuth 2.0 / OpenID Connect** identity provider that uses **Telegram** for authentication. Users scan a QR code with their Telegram app and approve the login inside Telegram – no passwords required.
 
@@ -29,8 +29,8 @@ It runs as a standalone server, or can be embedded as a library: every instance 
 ## Installation
 
 ```bash
-git clone https://github.com/jitdor/telegram-idp.git
-cd telegram-idp
+git clone https://github.com/jitdor/telegram-oidc-provider.git
+cd telegram-oidc-provider
 npm ci
 cp .env.example .env              # then edit it
 npm run register-client -- --client-id my-app --name "My App" \
@@ -123,7 +123,7 @@ GET /authorize
 Accepts `application/x-www-form-urlencoded` (standard) or JSON. Confidential clients authenticate with HTTP Basic (`client_secret_basic`) or `client_secret` in the body (`client_secret_post`); public clients send only `client_id`.
 
 ```bash
-curl -X POST https://telegram-idp.example.com/token \
+curl -X POST https://telegram-oidc-provider.example.com/token \
   -u "YOUR_CLIENT_ID:YOUR_SECRET" \
   -d grant_type=authorization_code -d code=AUTH_CODE \
   -d redirect_uri=https://yourapp.example.com/callback -d code_verifier=YOUR_PKCE_VERIFIER
@@ -157,7 +157,7 @@ Errors are JSON `{ "error": "…", "error_description": "…" }` with RFC 6749 c
 ### Userinfo
 
 ```bash
-curl https://telegram-idp.example.com/userinfo -H "Authorization: Bearer ACCESS_TOKEN"
+curl https://telegram-oidc-provider.example.com/userinfo -H "Authorization: Bearer ACCESS_TOKEN"
 ```
 
 Requires an access token (ID tokens are rejected) whose audience includes the IdP's userinfo resource, that is not revoked, and whose grant is still consented. Requires the `openid` scope.
@@ -235,7 +235,7 @@ For finer control use the pieces directly: `createIdpContext({ config, db | stor
 ### Caddy
 
 ```
-telegram-idp.example.com {
+telegram-oidc-provider.example.com {
     reverse_proxy localhost:3000
 }
 ```
@@ -246,14 +246,14 @@ Set `TRUST_PROXY=true` behind a reverse proxy, and make sure `BASE_URL` matches 
 
 ```ini
 [Unit]
-Description=Telegram Identity Provider
+Description=Telegram OIDC Provider
 After=network.target
 
 [Service]
 Type=simple
-User=telegram-idp
-WorkingDirectory=/opt/telegram-idp
-EnvironmentFile=/opt/telegram-idp/.env
+User=telegram-oidc-provider
+WorkingDirectory=/opt/telegram-oidc-provider
+EnvironmentFile=/opt/telegram-oidc-provider/.env
 ExecStart=/usr/bin/npm start
 Restart=on-failure
 
