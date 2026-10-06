@@ -1,5 +1,5 @@
 {
-  "name": "telegram-idp",
+  "name": "telegram-oidc-provider",
   "version": "0.2.0",
   "description": "Self-hosted OAuth 2.0 / OpenID Connect identity provider that authenticates users with Telegram",
   "type": "module",

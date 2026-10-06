@@ -214,7 +214,7 @@ Approving a login records consent for exactly the requested scopes. An access to
 
 ```js
 import { Bot } from 'grammy';
-import { createIdp, defineConfig, createDatabase, createFileKeyStore } from 'telegram-idp';
+import { createIdp, defineConfig, createDatabase, createFileKeyStore } from 'telegram-oidc-provider';
 
 const config = defineConfig({ issuer: 'https://id.example.com', telegramWebhookSecret: '…' });
 const bot = new Bot(process.env.TELEGRAM_BOT_TOKEN);
